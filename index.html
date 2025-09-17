@@ -404,7 +404,7 @@
         }
 
         .container {
-            padding: 100px 20px 20px 20px;
+            padding: 20px 20px 20px 20px;
             max-width: 100%;
             width: 100%;
             margin: 0 auto;
@@ -413,13 +413,18 @@
         .card {
             background-color: #fff;
             padding: 40px;
-            margin: 20px 0;
+            margin: 10px 0;
             border-radius: 0;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             opacity: 1;
             border: 1px solid rgba(212, 175, 55, 0.1);
             width: 100%;
             box-sizing: border-box;
+        }
+
+        /* Reduce top margin for first card */
+        .container > section:first-of-type .card:first-child {
+            margin-top: 0;
         }
 
         /* Full width card layout with larger right images */
