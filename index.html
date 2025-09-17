@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dustin King - Technology Consultant</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,700;1,300">
+
+    <!-- Preload critical images for better loading performance -->
+    <link rel="preload" as="image" href="/assets/Swearingen-CTYMzxSG.webp" fetchpriority="high">
+    <link rel="preload" as="image" href="/assets/background_campus-CqJKpBMC.webp" fetchpriority="high">
+    <link rel="preload" as="image" href="/assets/VaultAudit-BQpd7TxT.webp" fetchpriority="medium">
+    <link rel="preload" as="image" href="/assets/PickleUp-DiFQ7NP4.webp" fetchpriority="low">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation Animations and Header Behavior */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background-color: transparent;
+            transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 15px 4vw;
+        }
+
+        .header-title-logo img {
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .header-title-logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .header-nav-list {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-nav-item {
+            margin: 0 15px;
+            height: auto !important;
+            line-height: normal !important;
+            display: inline-block !important;
+            vertical-align: middle !important;
+        }
+
+        .header-nav-item a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 0 !important;
+            display: inline-block !important;
+            line-height: 1.2 !important;
+            height: auto !important;
+            vertical-align: middle !important;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .header-nav-item a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #D4AF37;
+            transition: width 0.3s ease;
+        }
+
+        .header-nav-item a:hover::after,
+        .header-nav-item--active a::after {
+            width: 100%;
+        }
+
+        .header-menu-nav-item a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 0 !important;
+            display: inline-block !important;
+            line-height: 1.2 !important;
+            height: auto !important;
+            vertical-align: middle !important;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        /* Mobile Menu Styles */
+        .header-burger {
+            display: none;
+        }
+
+        .header-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            display: none;
+        }
+
+        .header-menu.menu-open {
+            display: block;
+        }
+
+        .header-display-mobile {
+            display: none;
+        }
+
+        .header-menu-nav {
+            height: 100%;
+            overflow-y: auto;
+            padding: 80px 20px 40px;
+        }
+
+        .header-menu-nav-folder {
+            padding-top: 60px;
+        }
+
+        .header-menu-nav-item {
+            margin-bottom: 20px;
+        }
+
+        .header-menu-nav-item-content {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .burger {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            padding: 0;
+        }
+
+        .burger-box {
+            width: 30px;
+            height: 24px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .burger-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .top-bun, .patty, .bottom-bun {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+            transition: transform 0.15s ease;
+        }
+
+        .top-bun {
+            top: 0;
+        }
+
+        .patty {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .bottom-bun {
+            bottom: 0;
+        }
+
+        body.menu-is-open .top-bun {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        body.menu-is-open .patty {
+            opacity: 0;
+        }
+
+        body.menu-is-open .bottom-bun {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: clamp(2.5rem, 6vw, 4rem);
+            }
+
+            .hero-subtitle {
+                font-size: clamp(1rem, 2.5vw, 1.3rem);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-display-desktop {
+                display: none;
+            }
+
+            .header-display-mobile {
+                display: block;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .header-burger {
+                display: block;
+            }
+
+            .header-title-logo img {
+                height: 40px;
+            }
+
+            .hero-section {
+                height: 80vh;
+            }
+
+            .hero-title {
+                font-size: clamp(2rem, 8vw, 3rem);
+            }
+
+            .hero-subtitle {
+                font-size: clamp(0.9rem, 4vw, 1.1rem);
+            }
+
+            .container {
+                padding: 80px 20px 20px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: clamp(1.8rem, 8vw, 2.5rem);
+            }
+
+            .hero-subtitle {
+                font-size: clamp(0.8rem, 4vw, 1rem);
+            }
+
+            .hero-section {
+                height: 70vh;
+            }
+
+            .header-inner {
+                padding: 15px 3vw;
+            }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: heroZoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 0 4vw;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .scroll-indicator .text {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        .scroll-indicator .arrow {
+            font-size: 1.5rem;
+            animation: arrowBounce 2s infinite;
+            display: block;
+            text-align: center;
+        }
+
+        @keyframes arrowBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+
+        .contact-info {
+            margin-top: 1.5rem;
+        }
+
+        .contact-info p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .contact-info a {
+            color: #D4AF37;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            color: #B8941F;
+            text-decoration: underline;
+        }
+
+        .container {
+            padding: 100px 20px 20px 20px;
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 40px;
+            margin: 20px 0;
+            border-radius: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Full width card layout with centered right image */
+        .card > div:first-child {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            width: 100%;
+        }
+
+        .card > div:first-child > div:first-child {
+            flex: 2;
+        }
+
+        .card > div:first-child > div:last-child {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .card > div:first-child > div:last-child img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0;
+        }
+
+        .resume-preview {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .resume-image {
+            flex: 1;
+            min-width: 300px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+
+        .resume-image img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .resume-full {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .resume-full a {
+            display: inline-block;
+            background-color: #800000;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .resume-full a:hover {
+            background-color: #600000;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .organization-images {
+            display: flex;
+            justify-content: center; /* Center the images horizontally */
+            align-items: center;
+            gap: 20px; /* Add spacing between the images */
+            margin: 20px 0;
+        }
+
+        .organization-image {
+            opacity: 0; /* Initially invisible */
+            transform: translateX(-20px); /* Start off-screen to the left */
+            transition: transform 0.7s ease, opacity 0.7s ease;
+        }
+
+        .organization-image.image-1 {
+            width: 20%; /* 70% of the size of the other image */
+        }
+
+        .organization-image.image-2 {
+            width: 50%; /* Standard size for the second image */
+        }
+
+        .organization-image.visible {
+            opacity: 1; /* Fully visible */
+            transform: translateX(0); /* Move into position */
+        }
+
+        .organization-image img {
+            width: 100%; /* Scale image to container */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 5px; /* Optional: rounded corners */
+        }
+    </style>
+</head>
+<body>
+    <header id="header" class="black header theme-col--primary" data-header-style="dynamic">
+        <div class="header-inner container--fluid header-mobile-layout-logo-left-nav-right header-layout-nav-right">
+            <div class="header-background theme-bg--primary"></div>
+
+            <div class="header-display-desktop">
+                <div class="header-title-nav-wrapper">
+                    <div class="header-nav">
+                        <div class="header-nav-wrapper">
+                            <nav class="header-nav-list">
+                                <div class="header-nav-item header-nav-item--collection">
+                                    <a href="#education">Education</a>
+                                </div>
+                                <div class="header-nav-item header-nav-item--collection">
+                                    <a href="#experience">Experience</a>
+                                </div>
+                                <div class="header-nav-item header-nav-item--collection">
+                                    <a href="#leadership">Leadership</a>
+                                </div>
+                                <div class="header-nav-item header-nav-item--collection">
+                                    <a href="#skills">Skills & Interests</a>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-actions header-actions--right"></div>
+            </div>
+
+            <div class="header-display-mobile">
+                <div class="header-burger menu-overlay-has-visible-non-navigation-items">
+                    <button class="burger" aria-label="Toggle Menu">
+                        <div class="burger-box">
+                            <div class="burger-inner">
+                                <div class="top-bun"></div>
+                                <div class="patty"></div>
+                                <div class="bottom-bun"></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="header-menu">
+                <nav class="header-menu-nav">
+                    <div class="header-menu-nav-folder">
+                        <div class="header-menu-nav-item">
+                            <a href="#education" class="header-menu-nav-item-content">Education</a>
+                        </div>
+                        <div class="header-menu-nav-item">
+                            <a href="#experience" class="header-menu-nav-item-content">Experience</a>
+                        </div>
+                        <div class="header-menu-nav-item">
+                            <a href="#leadership" class="header-menu-nav-item-content">Leadership</a>
+                        </div>
+                        <div class="header-menu-nav-item">
+                            <a href="#skills" class="header-menu-nav-item-content">Skills & Interests</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-background">
+            <img src="/assets/Swearingen-CTYMzxSG.webp" alt="University of South Carolina Campus" loading="eager" fetchpriority="high">
+        </div>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">Dustin King</h1>
+            <p class="hero-subtitle">Computer Information Systems & Integrated Information Technology Student | Aspiring Technology Consultant</p>
+    <div class="contact-info">
+                <p><a href="https://linkedin.com/in/dustin-king" target="_blank">LinkedIn</a> | <a href="mailto:dustinisaacking@gmail.com">Email</a> | 803-524-0068</p>
+            </div>
+        </div>
+
+        <div class="scroll-indicator" onclick="scrollToSection('education')">
+            <div class="text">Scroll to explore</div>
+            <div class="arrow">↓</div>
+    </div>
+    </section>
+    <div class="container">
+        <section id="education">
+            <h2 style="color: #D4AF37;">Education</h2>
+            <div class="card">
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <h3>University of South Carolina – Molinaroli College of Engineering and Computing</h3>
+                        <p><strong>Expected Graduation:</strong> May 2027</p>
+                        <p><strong>Majors:</strong> Computer Information Systems & Integrated Information Technology</p>
+                        <p><strong>Minor:</strong> Business Information Systems</p>
+                        <p><strong>GPA:</strong> 4.0/4.0</p>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <img src="/assets/background_campus-CqJKpBMC.webp" alt="University of South Carolina Campus" style="width: 200px; height: auto; border-radius: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" loading="lazy">
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <h4>Academic Honors & Recognition</h4>
+                    <p><strong>Scholarships:</strong> Dean Scholar, Palmetto Fellow Scholar, STEM Scholar</p>
+                    <p><strong>Honors:</strong> President's List, Dean's List</p>
+                    <p><strong>Societies:</strong> Alpha Alpha Alpha (First-Generation Honor Society)</p>
+
+                    <h4>Relevant Coursework</h4>
+                    <p>Accounting, Management, Cybersecurity, Databases, Networking, Data Structures & Algorithms</p>
+                </div>
+            </div>
+        </section>
+        <section id="leadership">
+            <h2 style="color: #D4AF37;">Leadership & Professional Development</h2>
+            <div class="card">
+                <div style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px;">
+                    <div style="flex: 1;">
+                        <h3>Gamecock Consulting Club</h3>
+                        <p><strong>Director of Competitive Events & VP of External (2024–Present)</strong></p>
+                        <p>Expanded strategic partnerships with leading consulting firms and coordinated national-level competitions. Led teams in prestigious case competitions including McKinsey, EY, and PwC challenges, developing strategic problem-solving and client presentation skills.</p>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <div style="width: 200px; height: 150px; background: linear-gradient(135deg, #800000, #600000); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 0 auto;">
+                            GCC Leadership Photo<br><span style="font-size: 12px; font-weight: normal;">Coming Soon</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <h3>Theta Tau Professional Engineering Fraternity</h3>
+                        <p><strong>Technology Chair & Onboarding Mentor (2024–Present)</strong></p>
+                        <p>Led the complete redesign of the fraternity's website using modern web technologies, improving user experience and member engagement. Mentored new members through technical onboarding and contributed over 157 hours to community service initiatives.</p>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <img src="ThetaTauWebsite.png" alt="Theta Tau Leadership" style="width: 200px; height: auto; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="experience">
+            <h2 style="color: #D4AF37;">Professional Experience</h2>
+
+            <div class="card">
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <h3>CADA (Habit-Building Startup)</h3>
+                        <p><strong>Co-Founder & Backend Developer (2025–Present)</strong></p>
+                        <p>Collaborating with consultants from PwC, Accenture, and Allen & Company to build scalable backend systems. Developing AI-powered personalization features and notification systems that drive user engagement and retention. This experience has given me direct insight into how consulting firms approach digital transformation and technology strategy.</p>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <div style="width: 200px; height: 150px; background: linear-gradient(135deg, #800000, #600000); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 0 auto;">
+                            CADA Project Photo<br><span style="font-size: 12px; font-weight: normal;">Coming Soon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <h3>Vault Audit (Blockchain Audit Platform)</h3>
+                        <p><strong>Founder & Developer (2025–Present)</strong></p>
+                        <p>Created blockchain-based audit trail technology to verify file integrity for compliance purposes. Partnered with a PwC consultant, resulting in a research publication submission. The platform is designed for Fortune 500 compliance and enterprise scalability, bridging the gap between emerging blockchain technology and traditional audit assurance requirements.</p>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <img src="/assets/VaultAudit-BQpd7TxT.webp" alt="Vault Audit Platform" style="width: 200px; height: auto; border-radius: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" loading="lazy">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <h3>University of South Carolina – Biomedical Software Architect & Consultant</h3>
+                        <p><strong>Defense/Government Research (2025–Present)</strong></p>
+                        <p>Leading cross-functional teams to design federally funded biomedical platforms. Developing AI-driven analytics for defense applications that improve research speed and ensure compliance. This role has deepened my understanding of government contracting, regulatory compliance, and the intersection of technology with national security priorities.</p>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <div style="width: 200px; height: 150px; background: linear-gradient(135deg, #800000, #600000); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 0 auto;">
+                            Biomedical Research<br><span style="font-size: 12px; font-weight: normal;">Coming Soon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <h3>US Navy – AI Research Lead</h3>
+                        <p><strong>Autonomous Perception Systems (2024–Present)</strong></p>
+                        <p>Oversaw engineering teams on a $5M defense project developing AI solutions for naval imaging systems. Ensured compliance with rigorous military standards while delivering reliable performance under extreme conditions. This experience has given me firsthand knowledge of defense procurement, risk management, and technology assurance in high-stakes environments.</p>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <div style="width: 200px; height: 150px; background: linear-gradient(135deg, #800000, #600000); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 0 auto;">
+                            Navy Research Photo<br><span style="font-size: 12px; font-weight: normal;">Coming Soon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>UpAhead (Growth Platform)</h3>
+                <p><strong>Full Stack Engineer & Tech Strategy Consultant (2024–2025)</strong></p>
+                <p>Scaled platform from 0 to 5,000+ users through strategic technical implementations including cloud infrastructure, payment systems, authentication, and analytics. Advised CEO on technology strategy and system architecture, learning how to balance technical excellence with business objectives and user experience.</p>
+            </div>
+
+            <div class="card">
+                <h3>Psylotech (Consulting Project)</h3>
+                <p><strong>Student Technology Consultant (2024)</strong></p>
+                <p>Partnered with the Graduate Gamecock Consulting Club to provide digital strategy recommendations. The project resulted in new system implementations, giving me practical experience in consulting methodologies, client relationships, and translating technical recommendations into business value.</p>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 40px; align-items: center; width: 100%;">
+                    <div style="flex: 2;">
+                <h3>"Pickle Up" Pickleball Social Media Application</h3>
+                        <p><strong>Mobile App Developer (2023–2024)</strong></p>
+                        <p>Developed a comprehensive pickleball social media platform using Swift and SwiftUI. Led the design and implementation of all frontend components and Firebase backend architecture. Created an engaging platform that connects pickleball enthusiasts while ensuring compliance with Apple App Store standards.</p>
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 200px;">
+                        <img src="/assets/PickleUp-DiFQ7NP4.webp" alt="Pickle Up Application" style="max-width: 100%; height: auto; border-radius: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" loading="lazy">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 40px; align-items: center; width: 100%;">
+                    <div style="flex: 2;">
+                        <h3>Cortana Replacement - Python Voice Assistant</h3>
+                        <p><strong>AI & Automation Developer (2022–2023)</strong></p>
+                        <p>Built a comprehensive Python-based voice assistant with API integrations for email, calendar, and system automation. Implemented advanced natural language processing and background task execution, allowing seamless multitasking without leaving the current application. Featured robust error handling and user-friendly voice responses.</p>
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 200px;">
+                        <div style="width: 200px; height: 150px; background: linear-gradient(135deg, #800000, #600000); border-radius: 0; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            Python Voice Assistant<br><span style="font-size: 12px; font-weight: normal;">Demo Video Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="skills">
+            <h2 style="color: #D4AF37;">Skills & Interests</h2>
+            <div class="card">
+                <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <h3>Technical Skills</h3>
+                        <div style="margin-bottom: 20px;">
+                            <h4>Advanced Proficiency</h4>
+                            <p><strong>Languages & Frameworks:</strong> Python, Java, JavaScript, React, HTML/CSS</p>
+                            <p><strong>Development Tools:</strong> GitHub, AWS, GCP, Azure</p>
+                        </div>
+
+                        <div>
+                            <h4>Intermediate Proficiency</h4>
+                            <p><strong>Languages:</strong> C++, Swift, Xcode</p>
+                            <p><strong>Business & Analysis:</strong> Excel, Data Analysis, Project Management, Market Research, Financial Modeling, Strategic Planning</p>
+                        </div>
+                    </div>
+
+                    <div style="flex: 1; min-width: 250px;">
+                        <h3>Personal Interests</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <h4>Sports & Recreation</h4>
+                                <ul style="padding-left: 20px;">
+                                    <li>Pickleball</li>
+                                    <li>Carolina Panthers</li>
+                                    <li>Charlotte Hornets</li>
+                                    <li>Lacrosse</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4>Creative & Intellectual</h4>
+                                <ul style="padding-left: 20px;">
+                                    <li>Vinyl Collecting</li>
+                                    <li>Chess</li>
+                                    <li>Graphic Design</li>
+                                    <li>Content Creation</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4>Academic & Professional</h4>
+                                <ul style="padding-left: 20px;">
+                                    <li>Biomedical Studies</li>
+                                    <li>Consulting & Strategy</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <div style="width: 200px; height: 250px; background: linear-gradient(135deg, #800000, #600000); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 0 auto;">
+                        Professional Headshot<br><span style="font-size: 12px; font-weight: normal;">Coming Soon</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        // Header scroll behavior
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            const heroSection = document.querySelector('.hero-section');
+
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+                } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu functionality
+        const burger = document.querySelector('.burger');
+        const headerMenu = document.querySelector('.header-menu');
+
+        if (burger) {
+            burger.addEventListener('click', function() {
+                document.body.classList.toggle('menu-is-open');
+                headerMenu.classList.toggle('menu-open');
+            });
+        }
+
+        // Scroll to section function
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Smooth page loading - remove janky animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure all cards are visible immediately
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.style.opacity = '1';
+            });
+        });
+    </script>
+</body>
+</html>
