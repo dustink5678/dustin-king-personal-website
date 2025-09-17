@@ -229,42 +229,62 @@
             }
         }
 
-        /* Remove media query to keep mobile nav always visible */
-        .header-display-desktop {
-            display: none;
+        /* Responsive header behavior - keep navigation visible on smaller screens like Theta Tau */
+        @media (max-width: 768px) {
+            .header-display-desktop {
+                display: flex !important;
+            }
+            
+            .header-display-mobile {
+                display: none !important;
+            }
+            
+            .header-nav {
+                display: block !important;
+            }
+            
+            .header-burger {
+                display: none !important;
+            }
+            
+            /* Make navigation more compact on smaller screens */
+            .header-nav-item {
+                margin: 0 8px;
+            }
+            
+            .header-nav-item a {
+                font-size: 0.9rem;
+                padding: 6px 0 !important;
+            }
+            
+            .header-title-logo img {
+                height: 45px;
+            }
+            
+            .header-inner {
+                padding: 10px 3vw;
+            }
         }
 
-        .header-display-mobile {
-            display: block;
+        @media (max-width: 480px) {
+            .header-nav-item {
+                margin: 0 5px;
+            }
+            
+            .header-nav-item a {
+                font-size: 0.8rem;
+                padding: 4px 0 !important;
+            }
+            
+            .header-title-logo img {
+                height: 35px;
+            }
+            
+            .header-inner {
+                padding: 8px 2vw;
+            }
         }
 
-        .header-nav {
-            display: none;
-        }
-
-        .header-burger {
-            display: block;
-        }
-
-        .header-title-logo img {
-            height: 40px;
-        }
-
-        .hero-section {
-            height: 80vh;
-        }
-
-        .hero-title {
-            font-size: clamp(2rem, 8vw, 3rem);
-        }
-
-        .hero-subtitle {
-            font-size: clamp(0.9rem, 4vw, 1.1rem);
-        }
-
-        .container {
-            padding: 80px 20px 20px 20px;
-        }
 
         @media (max-width: 480px) {
             .hero-title {
@@ -878,33 +898,7 @@
             }
         });
 
-        // Mobile menu functionality
-        const burger = document.querySelector('.burger');
-        const headerMenu = document.querySelector('.header-menu');
-
-        if (burger) {
-            burger.addEventListener('click', function() {
-                document.body.classList.toggle('menu-is-open');
-                headerMenu.classList.toggle('menu-open');
-            });
-        }
-
-        // Close mobile menu when clicking on menu items
-        const menuItems = document.querySelectorAll('.header-menu-nav-item a');
-        menuItems.forEach(item => {
-            item.addEventListener('click', function() {
-                document.body.classList.remove('menu-is-open');
-                headerMenu.classList.remove('menu-open');
-            });
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!headerMenu.contains(event.target) && !burger.contains(event.target)) {
-                document.body.classList.remove('menu-is-open');
-                headerMenu.classList.remove('menu-open');
-            }
-        });
+        // No mobile menu functionality needed - navigation stays visible like Theta Tau
 
         // Scroll to section function
         function scrollToSection(sectionId) {
