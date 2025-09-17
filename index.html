@@ -141,7 +141,7 @@
         }
 
         .header-display-mobile {
-            display: none;
+            display: block;
         }
 
         .header-menu-nav {
@@ -229,42 +229,41 @@
             }
         }
 
-        @media (max-width: 768px) {
-            .header-display-desktop {
-                display: none;
-            }
+        /* Remove media query to keep mobile nav always visible */
+        .header-display-desktop {
+            display: none;
+        }
 
-            .header-display-mobile {
-                display: block;
-            }
+        .header-display-mobile {
+            display: block;
+        }
 
-            .header-nav {
-                display: none;
-            }
+        .header-nav {
+            display: none;
+        }
 
-            .header-burger {
-                display: block;
-            }
+        .header-burger {
+            display: block;
+        }
 
-            .header-title-logo img {
-                height: 40px;
-            }
+        .header-title-logo img {
+            height: 40px;
+        }
 
-            .hero-section {
-                height: 80vh;
-            }
+        .hero-section {
+            height: 80vh;
+        }
 
-            .hero-title {
-                font-size: clamp(2rem, 8vw, 3rem);
-            }
+        .hero-title {
+            font-size: clamp(2rem, 8vw, 3rem);
+        }
 
-            .hero-subtitle {
-                font-size: clamp(0.9rem, 4vw, 1.1rem);
-            }
+        .hero-subtitle {
+            font-size: clamp(0.9rem, 4vw, 1.1rem);
+        }
 
-            .container {
-                padding: 80px 20px 20px 20px;
-            }
+        .container {
+            padding: 80px 20px 20px 20px;
         }
 
         @media (max-width: 480px) {
@@ -889,6 +888,23 @@
                 headerMenu.classList.toggle('menu-open');
             });
         }
+
+        // Close mobile menu when clicking on menu items
+        const menuItems = document.querySelectorAll('.header-menu-nav-item a');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                document.body.classList.remove('menu-is-open');
+                headerMenu.classList.remove('menu-open');
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!headerMenu.contains(event.target) && !burger.contains(event.target)) {
+                document.body.classList.remove('menu-is-open');
+                headerMenu.classList.remove('menu-open');
+            }
+        });
 
         // Scroll to section function
         function scrollToSection(sectionId) {
